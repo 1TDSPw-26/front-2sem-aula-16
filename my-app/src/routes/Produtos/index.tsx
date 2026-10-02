@@ -1,42 +1,85 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TipoProduto } from "../../types/types";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FaRegEdit as Editar } from "react-icons/fa";
 import { RiDeleteBinLine as Excluir } from "react-icons/ri";
 
 export default function Produtos() {
-
   //Recipiente onde irei guardar a lista de produtos
   const [produtos, setProduto] = useState<TipoProduto[]>([]);
 
   useEffect(() => {
-
     const carregarProdutos = async () => {
       try {
         const resposta = await fetch("http://localhost:3001/produtos");
 
         if (!resposta.ok) {
-          throw new Error(`Erro no fetch da resposta dos produtos: ${resposta.status} - ${resposta.statusText}`);
+          throw new Error(
+            `Erro no fetch da resposta dos produtos: ${resposta.status} - ${resposta.statusText}`,
+          );
         }
 
         const data: TipoProduto[] = await resposta.json();
         console.log(data);
         setProduto(data);
-
       } catch (error) {
         console.error(error);
       }
-
-    }
+    };
 
     carregarProdutos();
-
   }, []);
+
+  const modalInfo = useRef<HTMLDialogElement>(null);
+
+  const [idExclusao, setIdExclusao] = useState<string>("");
+
+  const abrirModal = (id: string) => {
+    setIdExclusao(id);
+    modalInfo.current?.showModal();
+  };
+
+  const navigate = useNavigate();
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/produtos/${idExclusao}`, {
+        method: "DELETE",
+      });
+
+      // Erro
+      if (!response.ok) {
+        throw new Error(
+          `Ocorreu um erro na exclusão do produto: ${response.status} - ${response.statusText}`,
+        );
+      }
+
+      // Sucesso
+      alert("Produto excluído com sucesso.");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <main>
       <h2>Produtos</h2>
-      <table border={1} style={{ width: "100%", borderCollapse: "collapse", textAlign: "center" }}>
+
+      <dialog ref={modalInfo} className="msgDelete">
+        <h3>Exclusão de produto</h3>
+
+        <div>
+          <p>Deseja realmente excluir esse produto?</p>
+          <button onClick={() => modalInfo.current?.close()}>Cancelar</button>
+          <button onClick={() => handleDelete()}>Sim - Excluir</button>
+
+        </div>
+      </dialog>
+
+      <table
+        border={1}
+        className="tblProduto"
+      >
         <thead>
           <tr>
             <th>ID</th>
@@ -48,15 +91,22 @@ export default function Produtos() {
         </thead>
         <tbody>
           {produtos.map((p) => (
-
             <tr key={p.id}>
               <td>{p.id}</td>
               <td>{p.nome}</td>
               <td>{p.preco}</td>
               <td>{p.estoque}</td>
               <td>
-                <Link to={`/editar-produtos/${p.id}`}> <Editar /> </Link>  |
-                <Link to="#" onClick={() => confirm("Deseja realmente excluir?")}> <Excluir /> </Link>  |
+                <Link to={`/editar-produtos/${p.id}`}>
+                  {" "}
+                  <Editar />{" "}
+                </Link>{" "}
+                |
+                <Link to="#" onClick={() => abrirModal(p.id)}>
+                  {" "}
+                  <Excluir />{" "}
+                </Link>{" "}
+                |
               </td>
             </tr>
           ))}
@@ -68,5 +118,5 @@ export default function Produtos() {
         </tfoot>
       </table>
     </main>
-  )
+  );
 }

@@ -6,6 +6,7 @@ export default function Menu() {
       <ul style={{listStyle: "none", padding: 0, margin: 0} }>
         <li style={{margin: "0 10px", display: "inline-block"}}><Link to="/">Home</Link></li>
         <li style={{margin: "0 10px", display: "inline-block"}}><Link to="/produtos">Produtos</Link></li>
+        <li style={{margin: "0 10px", display: "inline-block"}}><Link to="/cad-produto">Cadastro de Produtos</Link></li>
       </ul>
     </nav>
   );
