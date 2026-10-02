@@ -74,7 +74,7 @@ export default function Produtos() {
                 <div>
                     <p>Deseja realmente excluir esse produto?</p>
                     <button onClick={()=> modalInfo.current?.close()}>Cancelar</button>
-                    <button onClick={()=> handleDelete()} className="bg-red-600 text-white">Sim - Excluir</button>
+                    <button onClick={()=> handleDelete()} className="bg-red-600 text-whitea">Sim - Excluir</button>
                 </div>                
             </dialog>
 
