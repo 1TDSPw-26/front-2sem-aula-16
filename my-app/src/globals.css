@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@layer{
+    .msgDelete{
+        @apply bg-gray-400 border-2 rounded-2x1 mx-auto my-auto w-[30%] px-5 py-5;
+
+
+        & button{
+            @apply inline-block m-2 p-2 rounded-[5px]
+        }
+        & div :nth-child(2){
+            @apply bg-black text-white hover:bg-white hover:text-black
+        }
+    }
+}
