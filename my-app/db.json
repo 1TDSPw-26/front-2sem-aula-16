@@ -23,6 +23,12 @@
       "nome": "Filtro de Linha Tensionado",
       "preco": 150,
       "estoque": 4
+    },
+    {
+      "id": "CJLGbFfQcQg",
+      "nome": "Pedro",
+      "preco": 0.9,
+      "estoque": 1
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
