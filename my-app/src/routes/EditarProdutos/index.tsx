@@ -46,7 +46,7 @@ export default function EditarProdutos() {
                 "Content-Type":"application/json"
               },
               body: JSON.stringify(produto)
-            } );
+            });
 
             if(!response.ok){
               throw new Error(`Ocorreu um erro na atualização do produto: ${response.status} - ${response.statusText}`)
